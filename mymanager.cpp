@@ -281,3 +281,116 @@ bool myManager::del_user_home()
     }
     return true;
 }
+/* ============================================================================================================ */
+/*                              SECTION II : System & Networking Section                                        */
+/* ============================================================================================================ */
+QString myManager::cat_users()
+{
+    QProcess users_proc;
+    QString real_users;
+    users_proc.start("bash", QStringList() << "-c" << "cut -d: -f1,3 /etc/passwd | egrep ':[0-9]{4}$' | cut -d: -f1");
+    if(!users_proc.waitForFinished(3000) || users_proc.exitCode()!=0)
+    {
+        // upon error return error
+        return "ERROR";
+    }
+    real_users = users_proc.readAllStandardOutput();
+    return real_users;
+}
+
+
+QString myManager::cat_groups()
+{
+    QProcess groups_proc;
+    QString real_groups;
+    groups_proc.start("bash", QStringList() << "-c" << "cut -d: -f1,3 /etc/group | egrep ':[0-9]{4}$' | cut -d: -f1");
+    if(!groups_proc.waitForFinished(3000) || groups_proc.exitCode()!=0)
+    {
+        return "ERROR";
+    }
+    real_groups = groups_proc.readAllStandardOutput();
+    return real_groups;
+}
+
+QString myManager::cat_shells()
+{
+    QProcess shells_proc;
+    QString shells;
+    shells_proc.start("cat /etc/shells");
+    if(!shells_proc.waitForFinished(-1) || shells_proc.exitCode()!=0)
+    {
+        return "ERROR";
+    }
+    shells = shells_proc.readAllStandardOutput();
+    return shells;
+}
+
+QString myManager::ifconfig()
+{
+    QProcess ifconf;
+    ifconf.start("ifconfig");
+    ifconf.waitForFinished(-1);
+    QString hold(ifconf.readAllStandardOutput());
+    if(ifconf.exitCode()!=0)
+    {
+        return "ERROR";
+    }
+    return hold;
+}
+
+QString myManager::netstat()
+{
+    QProcess net;
+    // r -> display routing table argument
+    net.start("netstat -r");
+    net.waitForFinished(-1);
+    QString hold(net.readAllStandardOutput());
+    if(net.exitCode()!=0)
+    {
+        return "ERROR";
+    }
+    return hold;
+}
+
+void myManager::setTable(const QString table)
+{
+    firewallTable = table;
+}
+
+QString myManager::getTable() const
+{
+    return firewallTable;
+}
+
+QString myManager::ip4tables()
+{
+    QProcess pass, ip_proc;
+    pass.setStandardOutputProcess(&ip_proc);
+    pass.start("echo " + getPassword());
+    ip_proc.start("sudo -S iptables -t " + getTable() + " -nL --line-numbers");
+    ip_proc.waitForFinished(6000);
+    pass.waitForFinished(6000);
+    QString hold(ip_proc.readAllStandardOutput());
+    qDebug() << "iptables command: " << hold << endl;
+    if(ip_proc.exitCode()!=0)
+    {
+        return "ERROR";
+    }
+    return hold;
+}
+
+QString myManager::ip6tables()
+{
+    QProcess pass, ip_proc;
+    pass.setStandardOutputProcess(&ip_proc);
+    pass.start("echo " + getPassword());
+    ip_proc.start("sudo -S ip6tables -t " + getTable() + " -nL --line-numbers");
+    ip_proc.waitForFinished(6000);
+    pass.waitForFinished(6000);
+    QString hold(ip_proc.readAllStandardOutput());
+    if(ip_proc.exitCode()!=0)
+    {
+        return "ERROR";
+    }
+    return hold;
+}

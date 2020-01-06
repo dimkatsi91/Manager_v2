@@ -39,7 +39,10 @@ ApplicationWindow {
                 icon.source: "/aboutAuthor.png"
                 icon.color: "transparent"
                 onTriggered: {
-                    console.log("About Author Action was triggered ...")
+                    //console.log("About Author Action was triggered ...")
+                    genericMessageDialog.title = "About Author"
+                    genericMessageDialog.text = "Dimos Katsimardos\nwww.linkedin.com/in/dimkatsi91\nJanvier 06, 2020"
+                    genericMessageDialog.open()
                 }
             }
         }
@@ -198,6 +201,11 @@ ApplicationWindow {
     property string new_user_id: ""
     property string new_user_shell: ""
     property string new_user_encr_password: ""
+
+    // The Firewall Table that will be chosen by the user from the respective ComboBox
+    // in the System & Networking Section related Actions | Default value: "filter" table
+    //
+    property string firewallTable: "filter"
 
     GroupBox {
         x: 5; y: 5
@@ -441,7 +449,7 @@ ApplicationWindow {
     /*                        END OF Credentials GroupBox                   */
     GroupBox {
         id: userMgmntId
-        title: "User Management"
+        title: qsTr("User Management")
         font: Qt.font({family: "Helvetica", pointSize: 9, italic: true, bold: true})
         spacing: 5
         anchors.top: credsGroupBoxId.bottom
@@ -712,8 +720,9 @@ ApplicationWindow {
                                         if(myManager.user_exists() === false) {
                                             // if the user does not exist , then create him
                                             if(myManager.adduser() === true) {
+                                                //console.log("User: " + myManager.getNew_username() + " was succesfully created!")
                                                 genericMessageDialog.text = qsTr("User: " + myManager.getNew_username() + " was succesfully created!")
-                                                genericMessageDialog.title = "CREATE  ACTION  ERROR"
+                                                genericMessageDialog.title = "CREATE  ACTION  INFO"
                                                 genericMessageDialog.open()
                                             } else {
                                                 genericMessageDialog.text = qsTr("User: " + myManager.getNew_username() + " failed to be created! Please try again!")
@@ -773,6 +782,176 @@ ApplicationWindow {
                             }
 
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    /*                      SYSTEM & NETWORKING INFOMRATION                     */
+    GroupBox {
+        id: systemInfoGroupBox
+        title: qsTr("System & Networking Information")
+        x: 5
+        width: credsGroupBoxId.width
+        height: userMgmntId.height - 100
+        anchors.left: credsGroupBoxId.right
+        anchors.top: rootElementId.top
+        font: Qt.font({family: "Helvetica", pointSize: 9, italic: true, bold: true})
+        spacing: 5
+        leftInset: 20
+        // ColumnLayout for various checkBoxes
+        //
+        ColumnLayout {
+            id: systemInfoColumnId
+            anchors.left: parent.left
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // Show real system users
+                CheckBox {
+                    id: catUsersId
+                    text: "Show real users"
+                    checked: false
+                    onClicked: {
+                        if(checked===true) {
+                            // capture the real users calling appropriate c++ function
+                            genericMessageDialog.text = qsTr(myManager.cat_users())
+                            genericMessageDialog.title = "Real Users"
+                            genericMessageDialog.open()
+                            catUsersId.checked = false
+                        }
+                    }
+                }
+            }
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // Show real groups
+                CheckBox {
+                    id: catGroupsId
+                    text: "Show real groups"
+                    onClicked: {
+                        if(checked===true) {
+                            // capture the real groups calling appropriate c++ function
+                            genericMessageDialog.text = qsTr(myManager.cat_groups())
+                            genericMessageDialog.title = "Real Groups"
+                            genericMessageDialog.open()
+                            catGroupsId.checked = false
+                        }
+                    }
+                }
+            }
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // show available shells
+                CheckBox {
+                    id: catShells
+                    text: "Show available system shells"
+                    onClicked: {
+                        if(checked===true) {
+                            // capture the system shells calling appropriate c++ function
+                            genericMessageDialog.text = qsTr(myManager.cat_shells())
+                            genericMessageDialog.title = "Available System Shells"
+                            genericMessageDialog.open()
+                            catShells.checked = false
+                        }
+                    }
+                }
+            }
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // Show Networking interfaces
+                CheckBox {
+                    id: interfacesId
+                    text: "Show Network Interfaces"
+                    onClicked: {
+                        if(checked===true) {
+                            // capture Network Interfaces calling appropriate c++ function
+                            genericMessageDialog.text = qsTr(myManager.ifconfig())
+                            genericMessageDialog.title = "Network Interfaces"
+                            genericMessageDialog.open()
+                            interfacesId.checked = false
+                        }
+                    }
+                }
+            }
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // Show Routing table
+                CheckBox {
+                    id: firewall_4Id
+                    text: "Show IPv4 Firewall Configuration"
+                    onClicked: {
+                        if(username==="" || passwordTextField1Id.text==="") {
+                            //
+                            genericMessageDialog.text = qsTr("Please provide your username & password to check IPv4 Firewall Configuration!")
+                            genericMessageDialog.title = "WARNING"
+                            genericMessageDialog.open()
+                            firewall_4Id.checked = false
+                        } else {
+                            /////////////////////////////////  IPv4 /////////////////////////
+                            genericMessageDialog.text = qsTr(myManager.ip4tables() )
+                            genericMessageDialog.title = qsTr("IPv4 Firewall Configuration " + myManager.getTable() + " Table")
+                            genericMessageDialog.open()
+                            firewall_4Id.checked = false
+                        }
+                    }
+                }
+            }
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // Show Routing table
+                CheckBox {
+                    id: firewall_6Id
+                    text: "Show IPv6 Firewall Configuration"
+                    onClicked: {
+                        if(username==="" || passwordTextField1Id.text==="") {
+                            //
+                            genericMessageDialog.text = qsTr("Please provide your username & password to check IPv6 Firewall Configuration!")
+                            genericMessageDialog.title = "WARNING"
+                            genericMessageDialog.open()
+                            firewall_6Id.checked = false
+                        } else {
+                            /////////////////////////////////  IPv6 /////////////////////////
+                            genericMessageDialog.text = qsTr(myManager.ip6tables() )
+                            genericMessageDialog.title = qsTr("IPv6 Firewall Configuration " + myManager.getTable() + " Table")
+                            genericMessageDialog.open()
+                            firewall_6Id.checked = false
+                        }
+                    }
+                }
+            }
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // This ComboBox is the Table choice ::
+                // Filter | RAW | Security | Mangle
+                //
+                ComboBox {
+                    id: firewallComboBoxId
+                    textRole: "choice"
+                    model: ListModel {
+                        id: tablesModel
+
+                        ListElement { choice: "Filter"; TableName: "filter" }
+                        ListElement { choice: "Security"; TableName: "security" }
+                        ListElement { choice: "Raw"; TableName: "raw" }
+                        ListElement { choice: "Mangle"; TableName: "mangle" }
+                    }
+
+                    onActivated: {
+                        // capture the new firewall table that the user has chosen
+                        // ATTENTION :: ACHTUNG HERE ::
+                        //
+                        firewallTable = tablesModel.get(firewallComboBoxId.currentIndex).TableName
+                        // Update the firewall Table in the c++ code
+                        //
+                        myManager.setTable(firewallTable)
                     }
                 }
             }

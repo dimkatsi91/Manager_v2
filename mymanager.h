@@ -67,6 +67,24 @@ public:
     Q_INVOKABLE bool set_chmod();
     Q_INVOKABLE bool del_user_home();
 
+    /*
+     * System & Networking Section related functions
+     */
+    // List / grep real human system users
+    Q_INVOKABLE QString cat_users();
+    // List / grep all real system groups
+    Q_INVOKABLE QString cat_groups();
+    Q_INVOKABLE QString cat_shells();
+    Q_INVOKABLE QString ifconfig();
+    Q_INVOKABLE QString netstat();
+    // Return Firewall configuration for specific Table
+    //
+    Q_INVOKABLE QString ip4tables();
+    Q_INVOKABLE QString ip6tables();
+
+    Q_INVOKABLE void setTable(const QString table);
+    Q_INVOKABLE QString getTable() const;
+
 private:
     // username & password string variables
     //
@@ -83,6 +101,9 @@ private:
     QString new_user_id;
     QString new_user_shell;
     QString new_user_encr_password;
+    // Firewall Table
+    //
+    QString firewallTable;
 
 signals:
     // no need for now | everything is controled by the QML UI code
