@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>aboutAuthor.png</file>
+        <file>aboutManager.png</file>
+        <file>exit.png</file>
+        <file>backColor.png</file>
+        <file>manager.png</file>
+    </qresource>
+</RCC>

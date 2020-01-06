@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MenuBarIcos/aboutAuthor.png</file>
+        <file>MenuBarIcos/aboutManager.png</file>
+    </qresource>
+</RCC>
