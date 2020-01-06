@@ -682,19 +682,39 @@ ApplicationWindow {
                         id: createNewUserButtonId
                         text: qsTr("CREATE")
                         onClicked: {
-                            if(myManager.is_username_valid() === true) {
-                                console.log("Username: " + new_username + " is a valid one ... Continue procedure ... ")
-                                if(myManager.user_exists() === false) {
-                                    // if the user does not exist , then create him
-                                    if(myManager.adduser() === true) {
-                                        console.log("User: " + myManager.getNew_username() + " was succesfully created!")
+                            // check if 'Submit Credentials' is checked in order to enter this CREATE user procedure
+                            //
+                            if(myManager.getUsername()==="" && myManager.getPassword()==="") {
+                                // display a message that credentials should be entered
+                                console.log("Credentials should be provided to create a user!")
+                            } else {
+
+                                // Next check: If the new user username & password 'at least' are not provided, then abort
+                                // DIsplay a message that the new user information should be provided
+                                //
+                                if(myManager.getNew_username()==="" || myManager.getNew_user_encr_password()==="") {
+                                    console.log("At lease provide new user's username and password to create a new user!")
+                                } else {
+
+                                    if(myManager.is_username_valid() === true) {
+                                        console.log("Username: " + new_username + " is a valid one ... Continue procedure ... ")
+                                        if(myManager.user_exists() === false) {
+                                            // if the user does not exist , then create him
+                                            if(myManager.adduser() === true) {
+                                                console.log("User: " + myManager.getNew_username() + " was succesfully created!")
+                                            } else {
+                                                console.log("User: " + myManager.getNew_username() + " failed to be created! Please try again!")
+                                            }
+                                        }
                                     } else {
-                                        console.log("User: " + myManager.getNew_username() + " failed to be created! Please try again!")
+                                        console.log("Invalid username ... Aborting ...")
                                     }
                                 }
-                            } else {
-                                console.log("Invalid username ... Aborting ...")
+
                             }
+
+
+
                         }
                     }
                     DelayButton {
@@ -706,7 +726,7 @@ ApplicationWindow {
                                 console.log("Cannot remove user that does not exist in the system.")
                             } else {
                                 if(myManager.deluser() === true && myManager.del_user_home()) {
-                                    console.log("Just deleted user: " + new_username + " from your sysrtem!")
+                                    console.log("Just deleted user: " + new_username + " from your system!")
                                 }
                             }
                         }

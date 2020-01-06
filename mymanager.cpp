@@ -115,7 +115,7 @@ bool myManager::user_exists()
 {
     QProcess proc;
     proc.start("id " + getNew_username());
-    proc.waitForFinished();
+    proc.waitForFinished(-1);
     if(proc.exitCode()!=0)
     {
         return false;
@@ -156,7 +156,7 @@ void myManager::create_enc_password()
     // opnssl passwd <plain_password>  --> creates the encrypted password hash
     // to be used with the useradd -p <password_hash> option !
     QProcess openssl;
-    openssl.start("openssl passwd " + getNew_username());
+    openssl.start("openssl passwd " + getNew_user_encr_password());
     openssl.waitForFinished();
     QString hold(openssl.readAllStandardOutput());
     hold.remove("\n");
@@ -174,8 +174,8 @@ bool myManager::set_chown()
     passwd.setStandardOutputProcess(&chown);
     passwd.start("echo " + getPassword());
     chown.start("sudo -S chown " + getNew_username() + " /home/" + getNew_username());
-    chown.waitForFinished(6000);
-    passwd.waitForFinished(6000);
+    chown.waitForFinished(-1);
+    passwd.waitForFinished(-1);
     if(chown.exitCode()!=0)
     {
         return false;
@@ -189,8 +189,8 @@ bool myManager::set_chmod()
     pass.setStandardOutputProcess(&chmod);
     pass.start("echo " + getPassword());
     chmod.start("sudo -S chmod -R u=rwx,g=rw,o=--- /home/" + getNew_username());
-    chmod.waitForFinished(6000);
-    pass.waitForFinished(6000);
+    chmod.waitForFinished(-1);
+    pass.waitForFinished(-1);
     if(chmod.exitCode()!=0)
     {
         return false;
@@ -207,7 +207,8 @@ bool myManager::adduser()
     qDebug() << "New username: " << getNew_username() << endl;
     qDebug() << "New user real name: " << getNew_user_realname() << endl;
     qDebug() << "New user group : " << getNew_user_group() << endl;
-    qDebug() <<" New user ID: " << getNew_user_id() << " Shell: " << getNew_user_shell() << endl;
+    qDebug() << " New user ID: " << getNew_user_id() << endl;
+    qDebug() << " Shell: " << getNew_user_shell() << endl;
 
     QString options;
     QProcess pass, add;
@@ -230,11 +231,15 @@ bool myManager::adduser()
     {
         options += " -s /bin/" + getNew_user_shell();
     }
-    options += " -p " + getNew_user_encr_password();
+    // Call create_enc_password() to create the Hash of the entered password
+    //
+    create_enc_password();
+    options += " -p " + new_user_encr_password;
     options += " " + getNew_username();
+    qDebug() << "useradd() command: useradd " << options << endl;
     add.start("sudo -S useradd " + options);
     add.waitForFinished(-1);
-    pass.waitForFinished(6000);
+    pass.waitForFinished(-1);
     if(add.exitCode()!=0)
     {
         return false;
@@ -251,7 +256,7 @@ bool myManager::deluser()
     pass.setStandardOutputProcess(&del);
     pass.start("echo " + getPassword());
     del.start("sudo -S userdel " + getNew_username());
-    pass.waitForFinished(6000);
+    pass.waitForFinished(-1);
     del.waitForFinished(-1);
     if(del.exitCode()!=0)
     {
@@ -268,8 +273,8 @@ bool myManager::del_user_home()
     pass.setStandardOutputProcess(&rm_dir);
     pass.start("echo " + getPassword());
     rm_dir.start("sudo -S rm -r /home/" + getNew_username());
-    pass.waitForFinished(6000);
-    rm_dir.waitForFinished(6000);
+    pass.waitForFinished(-1);
+    rm_dir.waitForFinished(-1);
     if(rm_dir.exitCode()!=0)
     {
         return false;
