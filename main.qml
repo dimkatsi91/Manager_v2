@@ -352,6 +352,14 @@ ApplicationWindow {
                 }
             }
 
+            // this is a MessageDialog to be called in various situations
+            //
+            MessageDialog {
+                id: genericMessageDialog
+                title: qsTr("WARNING")
+                text: "This is the default warning message. Should be changed when Dialog is called."
+            }
+
             // A DelayButton to 'Submit' operator's username and password
             // Should only be accepted IF and only IF password===retypeOfPassword
             /// and username === getenv("USER")
@@ -371,19 +379,24 @@ ApplicationWindow {
                     onPressed: {
                         if(activated === true) {
                             // TODO: Remove it at the end of this Manager Application
-                            // test to see how can i call a c++ function from my QML UI code
                             ///////////////////////////////////
-                            //console.log("-->> " + myManager.sayHello("Dimos Kacimardos | called c++ from QML ... nice ..."))
-
-                            //console.log("password#1: " + passwd_une + " || password#2: " + passwd_deux)
                             if(passwd_une === "" || passwd_deux === "" || username === "") {
-                                console.log("Please provide username, type your password and retype it again to continue ...")
+                                //console.log("Please provide username, type your password and retype it again to continue ...")
+                                genericMessageDialog.title = "CREDENTIALS WARNING"
+                                genericMessageDialog.text = "Please provide your username and password and try again!"
+                                genericMessageDialog.open()
                             } else {
 
                                 if(passwd_une !== passwd_deux) {
-                                    console.log("Passwords do not match ... Please try again ... ")
+                                    //console.log("Passwords do not match ... Please try again ... ")
+                                    genericMessageDialog.title = "PASSWORDS ERROR"
+                                    genericMessageDialog.text = "Passwords do not match. Type them correctly and try again!"
+                                    genericMessageDialog.open()
                                 } else {
-                                    console.log("Passwords match ... Seems to be ok ... Continue procedure ...")
+                                    //console.log("Passwords match ... Seems to be ok ... Continue procedure ...")
+                                    genericMessageDialog.title = "CREDENTIALS INFOMRATION"
+                                    genericMessageDialog.text = "Credentials provided. Continuing procedure .."
+                                    genericMessageDialog.open()
                                     // pass entered username from the TextField to my C++ code
                                     //
                                     myManager.setUsername(username)
@@ -393,7 +406,10 @@ ApplicationWindow {
                                     // Last action -> compare current username into system with the entered username in the TextField
                                     //
                                     if(myManager.compare_usernames() === false) {
-                                        console.log("ERROR: It seems user: " + username + " is not the currently logged user ... Please specify correct user!")
+                                        //console.log("ERROR: It seems user: " + username + " is not the currently logged user ... Please specify correct user!")
+                                        genericMessageDialog.title = "CURRENT USER ERROR"
+                                        genericMessageDialog.text = "Please provide correct current username and try again!"
+                                        genericMessageDialog.open()
                                         // If username is fake -> then swipe switch to the right and clean up text fields
                                         clearSwitchId.checked = true
                                         clearSwitchId.checked = false
@@ -420,7 +436,7 @@ ApplicationWindow {
                         usernameTextFieldId.text = ""
                         passwordTextField1Id.text = ""
                         passwordTextField2Id.text = ""
-                        console.log("Just cleared username and password fields up ... from QML code")
+                        //console.log("Just cleared username and password fields up ... from QML code")
                         // Call c++ function that cleans up username/password Qstring variables
                         //
                         myManager.clearCredentials()
@@ -719,16 +735,38 @@ ApplicationWindow {
                     }
                     DelayButton {
                         id: removeUserDelayButtonId
+                        property bool userdelActivate: false
+                        delay: 1000
                         text: qsTr("REMOVE")
                         anchors.left: parent.right
+
+                        onActivated: {
+                            userdelActivate = true
+                        }
+
                         onClicked: {
-                            if(myManager.user_exists() === false) {
-                                console.log("Cannot remove user that does not exist in the system.")
+
+                            if(new_username==="" && new_user_encr_password==="") {
+                                genericMessageDialog.text = "Please provide the user's username to remove"
+                                genericMessageDialog.title = "REMOVE USER ERROR"
+                                genericMessageDialog.open()
                             } else {
-                                if(myManager.deluser() === true && myManager.del_user_home()) {
-                                    console.log("Just deleted user: " + new_username + " from your system!")
+
+                                if(userdelActivate===true) {
+                                    if(myManager.user_exists() === false) {
+                                        console.log("Cannot remove user that does not exist in the system.")
+                                    } else {
+                                        if(myManager.deluser() === true && myManager.del_user_home()) {
+                                            console.log("Just deleted user: " + new_username + " from your system!")
+                                        }
+                                    }
+                                } else {
+                                    genericMessageDialog.text = "Please activate the REMOVE DelayButton in order to continue!"
+                                    genericMessageDialog.title = "REMOVE ACTION ERROR"
+                                    genericMessageDialog.open()
                                 }
                             }
+
                         }
                     }
                 }
