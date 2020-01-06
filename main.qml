@@ -30,7 +30,6 @@ ApplicationWindow {
                 icon.source: "/aboutManager.png"
                 icon.color: "transparent"
                 onTriggered: {
-                    console.log("About Manager Appl Action was triggered ...")
                     aboutManagerDialogId.open()
                 }
             }
@@ -67,7 +66,7 @@ ApplicationWindow {
                 icon.source: "/exit.png"
                 icon.color: "transparent"
                 onTriggered: {
-                    console.log("Quit Action was triggered ...")
+                    //console.log("Quit Action was triggered ...")
                     quitManagerDialogId.open()
                 }
             }
@@ -143,10 +142,6 @@ ApplicationWindow {
         onAccepted: {
             // choose a color opening systems default application
             managerBackgroundColorId.color = colorDialogId.color
-            console.log("User has just selected Manager background color to: " + colorDialogId.color)
-        }
-        onRejected: {
-            console.log("ColorDialog is rejected, color remains the same ...")
         }
     }
 
@@ -184,7 +179,7 @@ ApplicationWindow {
         focus: true
         Keys.onPressed: {
             if(event.key === Qt.Key_Escape) {
-                console.log("Escape key is pressed ... quit() is called upon app ... ciao !!!")
+                // console.log("Escape key is pressed ... quit() is called upon app ... ciao !!!")
                 Qt.quit()
             }
         }
@@ -242,7 +237,7 @@ ApplicationWindow {
                     font: Qt.font({family: "Helvetica", pointSize: 9, italic: true})
                     onEditingFinished: {
                         username = text
-                        console.log("username: " + username)
+                        // console.log("username: " + username)
                     }
                     // remove border color from the text field
                     background: Rectangle {
@@ -381,19 +376,16 @@ ApplicationWindow {
                             // TODO: Remove it at the end of this Manager Application
                             ///////////////////////////////////
                             if(passwd_une === "" || passwd_deux === "" || username === "") {
-                                //console.log("Please provide username, type your password and retype it again to continue ...")
                                 genericMessageDialog.title = "CREDENTIALS WARNING"
                                 genericMessageDialog.text = "Please provide your username and password and try again!"
                                 genericMessageDialog.open()
                             } else {
 
                                 if(passwd_une !== passwd_deux) {
-                                    //console.log("Passwords do not match ... Please try again ... ")
                                     genericMessageDialog.title = "PASSWORDS ERROR"
                                     genericMessageDialog.text = "Passwords do not match. Type them correctly and try again!"
                                     genericMessageDialog.open()
                                 } else {
-                                    //console.log("Passwords match ... Seems to be ok ... Continue procedure ...")
                                     genericMessageDialog.title = "CREDENTIALS INFOMRATION"
                                     genericMessageDialog.text = "Credentials provided. Continuing procedure .."
                                     genericMessageDialog.open()
@@ -406,7 +398,6 @@ ApplicationWindow {
                                     // Last action -> compare current username into system with the entered username in the TextField
                                     //
                                     if(myManager.compare_usernames() === false) {
-                                        //console.log("ERROR: It seems user: " + username + " is not the currently logged user ... Please specify correct user!")
                                         genericMessageDialog.title = "CURRENT USER ERROR"
                                         genericMessageDialog.text = "Please provide correct current username and try again!"
                                         genericMessageDialog.open()
@@ -436,7 +427,6 @@ ApplicationWindow {
                         usernameTextFieldId.text = ""
                         passwordTextField1Id.text = ""
                         passwordTextField2Id.text = ""
-                        //console.log("Just cleared username and password fields up ... from QML code")
                         // Call c++ function that cleans up username/password Qstring variables
                         //
                         myManager.clearCredentials()
@@ -673,7 +663,9 @@ ApplicationWindow {
                     onClicked: {
                         if(checked === true) {
                             if(new_username === "" || new_user_encr_password === "") {
-                                console.log("New user to be created username and password should be both specified! Please enter them and try again!")
+                                genericMessageDialog.text = "New user to be created username and password should be both specified! Please enter them and try again!"
+                                genericMessageDialog.title = "CONFIRM  ACTION  ERROR"
+                                genericMessageDialog.open()
                             } else {
                                 // call c++ code to pass string values from QML elements (TExtFieds) to c++ QString variables
                                 // uername - real name (comment) - group - ID - user shell - password
@@ -702,28 +694,37 @@ ApplicationWindow {
                             //
                             if(myManager.getUsername()==="" && myManager.getPassword()==="") {
                                 // display a message that credentials should be entered
-                                console.log("Credentials should be provided to create a user!")
+                                genericMessageDialog.text = "Credentials should be provided to create a user!"
+                                genericMessageDialog.title = "CREATE  ACTION  ERROR"
+                                genericMessageDialog.open()
                             } else {
 
                                 // Next check: If the new user username & password 'at least' are not provided, then abort
                                 // DIsplay a message that the new user information should be provided
                                 //
                                 if(myManager.getNew_username()==="" || myManager.getNew_user_encr_password()==="") {
-                                    console.log("At lease provide new user's username and password to create a new user!")
+                                    genericMessageDialog.text = "At least provide new user's username and password to create a new user!"
+                                    genericMessageDialog.title = "CREATE  ACTION  ERROR"
+                                    genericMessageDialog.open()
                                 } else {
 
                                     if(myManager.is_username_valid() === true) {
-                                        console.log("Username: " + new_username + " is a valid one ... Continue procedure ... ")
                                         if(myManager.user_exists() === false) {
                                             // if the user does not exist , then create him
                                             if(myManager.adduser() === true) {
-                                                console.log("User: " + myManager.getNew_username() + " was succesfully created!")
+                                                genericMessageDialog.text = qsTr("User: " + myManager.getNew_username() + " was succesfully created!")
+                                                genericMessageDialog.title = "CREATE  ACTION  ERROR"
+                                                genericMessageDialog.open()
                                             } else {
-                                                console.log("User: " + myManager.getNew_username() + " failed to be created! Please try again!")
+                                                genericMessageDialog.text = qsTr("User: " + myManager.getNew_username() + " failed to be created! Please try again!")
+                                                genericMessageDialog.title = "CREATE  ACTION  ERROR"
+                                                genericMessageDialog.open()
                                             }
                                         }
                                     } else {
-                                        console.log("Invalid username ... Aborting ...")
+                                        genericMessageDialog.text = qsTr("User: " + myManager.getNew_username() + " is invalid. Try with another!")
+                                        genericMessageDialog.title = "CREATE  ACTION  ERROR"
+                                        genericMessageDialog.open()
                                     }
                                 }
 
@@ -754,10 +755,14 @@ ApplicationWindow {
 
                                 if(userdelActivate===true) {
                                     if(myManager.user_exists() === false) {
-                                        console.log("Cannot remove user that does not exist in the system.")
+                                        genericMessageDialog.text = "Cannot remove user that does not exist in the system."
+                                        genericMessageDialog.title = "REMOVE ACTION ERROR"
+                                        genericMessageDialog.open()
                                     } else {
                                         if(myManager.deluser() === true && myManager.del_user_home()) {
-                                            console.log("Just deleted user: " + new_username + " from your system!")
+                                            genericMessageDialog.text = qsTr("Just deleted user: " + new_username + " from your system!")
+                                            genericMessageDialog.title = "REMOVE ACTION ERROR"
+                                            genericMessageDialog.open()
                                         }
                                     }
                                 } else {
