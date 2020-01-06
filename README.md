@@ -8,7 +8,7 @@
 
 <h5>IDE    : Qt Creator 4.11.0 Open Source Community Edition</h5>
 
-<h5>Tool   : Qt 5.14.0 Oprn Source Community Edition</h5>
+<h5>Tool   : Qt 5.14.0 Open Source Community Edition</h5>
 
 <h5>Applicable  : Every Linux distribution</h5>
 
@@ -21,3 +21,9 @@
   the current real users and groups that exist in the Linux system, the available shells of the target
   system, the Networking Interfaces, the Routing tableand the Firewall configuration of the system 
   for every possible Firewall Table, like for example Filter, RAW, Security and Mangle.
+
+- Manager Interface:
+
+![Manager](https://github.com/dimkatsi91/Manager_v2/blob/master/samples/ManagerWindow.png)
+
+
