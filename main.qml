@@ -202,6 +202,12 @@ ApplicationWindow {
     property string new_user_shell: ""
     property string new_user_encr_password: ""
 
+    // A few variables for the groups addition|removal|rename functionality
+    //
+    property string new_group_name: ""
+    property string new_group_id: ""
+    property string existing_group_new_name: ""
+
     // The Firewall Table that will be chosen by the user from the respective ComboBox
     // in the System & Networking Section related Actions | Default value: "filter" table
     //
@@ -953,6 +959,168 @@ ApplicationWindow {
                         //
                         myManager.setTable(firewallTable)
                     }
+                }
+            }
+        }
+    }
+
+
+    /*                      GROUP ACTIONS SECTION                               */
+    GroupBox {
+        id: groupMgmntId
+        title: "Group Management"
+        x: 5
+        width: systemInfoGroupBox.width
+        height: rootElementId.height - systemInfoGroupBox.height - 150
+        anchors.bottom: userMgmntId.bottom
+        anchors.right: systemInfoGroupBox.right
+        font: Qt.font({family: "Helvetica", pointSize: 9, italic: true, bold: true})
+        spacing: 5
+        leftInset: 20
+        ColumnLayout {
+            id: groupColumnId
+            // New group name
+            Row {
+                width: parent.width
+                bottomPadding: 10
+                leftPadding: 20
+                // new user username Column
+                // label & TextField
+                Label {
+                    text: "Group Name          "
+                    id: newGroupNameLabelId
+                }
+                TextField {
+                    id: newGroupNameTextFieldId
+                    width: groupMgmntId.width - newGroupNameLabelId.width - 30
+                    // remove border color from the text field
+                    background: Rectangle {
+                        border.color: "transparent"
+                    }
+                    placeholderText: "      new group name "
+                    placeholderTextColor: "lightgray"
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 2000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("New group to be created name")
+                    onEditingFinished: {
+                        new_group_name = newGroupNameTextFieldId.text
+                    }
+                }
+            }
+            Row {
+                // New group ID
+                width: parent.width
+                bottomPadding: 10
+                leftPadding: 20
+                // new user username Column
+                // label & TextField
+                Label {
+                    text: "Group ID          "
+                    id: newGroupIDLabelId
+                }
+                TextField {
+                    id: newGroupIDTextFieldId
+                    width: groupMgmntId.width - newGroupIDLabelId.width - 30
+                    // remove border color from the text field
+                    background: Rectangle {
+                        border.color: "transparent"
+                    }
+                    placeholderText: "             new group ID (GID) "
+                    placeholderTextColor: "lightgray"
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 2000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("New group to be created ID (GID)")
+                    onEditingFinished: {
+                        new_group_id = newGroupIDTextFieldId.text
+                    }
+                }
+            }
+            Row {
+                // Existing group new name in order to rename it
+                width: parent.width
+                bottomPadding: 20
+                leftPadding: 20
+                // new user username Column
+                // label & TextField
+                Label {
+                    text: "Group New Name       "
+                    id: newGroupNewNameLabelId
+                }
+                TextField {
+                    id: newGroupNewNameTextFieldId
+                    width: groupMgmntId.width - newGroupNewNameLabelId.width - 30
+                    // remove border color from the text field
+                    background: Rectangle {
+                        border.color: "transparent"
+                    }
+                    placeholderText: "  group new name "
+                    placeholderTextColor: "lightgray"
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 2000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Group to be renamed new name")
+                    onEditingFinished: {
+                        new_group_id = newGroupIDTextFieldId.text
+                    }
+                }
+            }
+            Row {
+                // CLear above group related fields
+                Switch {
+                    id: clearGroupSwitchId
+                    text: "Clear Group Management Text Fields"
+                    checked: false
+                    leftPadding: 20
+                    bottomPadding: 20
+                    onCheckedChanged: {
+                        if(checked===true) {
+                            newGroupNameTextFieldId.text = ""
+                            newGroupIDTextFieldId.text = ""
+                            newGroupNewNameTextFieldId.text = ""
+                        }
+                    }
+                }
+            }
+            Row {
+                // Confirm in order to proceed
+                CheckBox {
+                    id: groupCheckBoxId
+                    text: "Confirm Group Elements"
+                    checked: false
+                    leftPadding: 20
+                    bottomPadding: 10
+                    onClicked: {
+                        if(checked===true) {
+                            console.log("Checked groupbox confirm checkBox ...")
+                            if(new_group_name==="") {
+                                genericMessageDialog.text = "Please provide group name and then confirm elements."
+                                genericMessageDialog.title = "WARNING"
+                                genericMessageDialog.open()
+                                groupCheckBoxId.checked = false
+                            }
+                        }
+                    }
+                }
+            }
+            RowLayout {
+                // Three buttons : [1] CREATE [2] RENAME [3] REMOVE
+                id: groupRowLayoutId
+                Button {
+                    id: createGroupId
+                    text: "     CREATE"
+                    leftInset: 20
+                }
+                Button {
+                    id: renameGroupId
+                    text: "RENAME"
+                    leftInset: 5
+                }
+                Button {
+                    id: removeGroupId
+                    text: "REMOVE"
+                    leftInset: 5
                 }
             }
         }
