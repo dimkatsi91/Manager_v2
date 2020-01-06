@@ -466,6 +466,9 @@ ApplicationWindow {
                     ToolTip.timeout: 2000
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("New user to be created username")
+                    onEditingFinished: {
+                        new_username = newUsernameTextFieldId.text
+                    }
                 }
             }
             Row {
@@ -490,6 +493,9 @@ ApplicationWindow {
                     ToolTip.timeout: 2000
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("New user to be created real name")
+                    onEditingFinished: {
+                        new_user_realname = newUserRealnameTextFieldId.text
+                    }
                 }
             }
             Row {
@@ -514,6 +520,9 @@ ApplicationWindow {
                     ToolTip.timeout: 2000
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("New user to be created group")
+                    onEditingFinished: {
+                        new_user_group = newUserGroupTextFieldId.text
+                    }
                 }
             }
             Row {
@@ -538,6 +547,9 @@ ApplicationWindow {
                     ToolTip.timeout: 2000
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("New user to be created ID")
+                    onEditingFinished: {
+                        new_user_id = newUserIDTextFieldId.text
+                    }
                 }
             }
             Row {
@@ -562,6 +574,9 @@ ApplicationWindow {
                     ToolTip.timeout: 2000
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("New user to be created shell")
+                    onEditingFinished: {
+                        new_user_shell = newUserShellTextFieldId.text
+                    }
                 }
             }
             Row {
@@ -587,6 +602,9 @@ ApplicationWindow {
                     ToolTip.timeout: 2000
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("New user to be created password")
+                    onEditingFinished: {
+                        new_user_encr_password = newUserPasswordTextFieldId.text
+                    }
                 }
             }
             Row {
@@ -640,6 +658,16 @@ ApplicationWindow {
                         if(checked === true) {
                             if(new_username === "" || new_user_encr_password === "") {
                                 console.log("New user to be created username and password should be both specified! Please enter them and try again!")
+                            } else {
+                                // call c++ code to pass string values from QML elements (TExtFieds) to c++ QString variables
+                                // uername - real name (comment) - group - ID - user shell - password
+                                //
+                                myManager.setNew_username(new_username)
+                                myManager.setNew_user_realname(new_user_realname)
+                                myManager.setNew_user_group(new_user_group)
+                                myManager.setNew_user_id(new_user_id)
+                                myManager.setNew_user_shell(new_user_shell)
+                                myManager.setNew_user_encr_password(new_user_encr_password)
                             }
                         }
                     }
@@ -653,6 +681,13 @@ ApplicationWindow {
                     Button {
                         id: createNewUserButtonId
                         text: qsTr("CREATE")
+                        onClicked: {
+                            if(myManager.is_username_valid() === true) {
+                                console.log("Username: " + new_username + " is a valid one ... Continue procedure ... ")
+                            } else {
+                                console.log("Invalid username ... Aborting ...")
+                            }
+                        }
                     }
                     DelayButton {
                         id: removeUserDelayButtonId

@@ -5,6 +5,8 @@
 #include <QString>
 #include <QDebug>
 #include <QProcess>
+#include <QList>
+#include <QVector>
 #include <QtWidgets/QMessageBox>
 
 class myManager : public QObject
@@ -24,6 +26,24 @@ public:
     Q_INVOKABLE QString getPassword() const;
     Q_INVOKABLE void setPassword(const QString &value);
 
+    Q_INVOKABLE QString getNew_username() const;
+    Q_INVOKABLE void setNew_username(const QString &value);
+
+    Q_INVOKABLE QString getNew_user_realname() const;
+    Q_INVOKABLE void setNew_user_realname(const QString &value);
+
+    Q_INVOKABLE QString getNew_user_group() const;
+    Q_INVOKABLE void setNew_user_group(const QString &value);
+
+    Q_INVOKABLE QString getNew_user_id() const;
+    Q_INVOKABLE void setNew_user_id(const QString &value);
+
+    Q_INVOKABLE QString getNew_user_shell() const;
+    Q_INVOKABLE void setNew_user_shell(const QString &value);
+
+    Q_INVOKABLE QString getNew_user_encr_password() const;
+    Q_INVOKABLE void setNew_user_encr_password(const QString &value);
+
     // compare/check if entered username is the same as current logged into system username
     //
     Q_INVOKABLE bool compare_usernames();
@@ -35,17 +55,17 @@ public:
     /*
      * User Management related functions
      */
-    void create_enc_password();
-    bool is_username_valid();
-    bool adduser();
-    bool deluser();
-    bool user_exists();
+    Q_INVOKABLE void create_enc_password();
+    Q_INVOKABLE bool is_username_valid();
+    Q_INVOKABLE bool adduser();
+    Q_INVOKABLE bool deluser();
+    Q_INVOKABLE bool user_exists();
     /* set ownership and permissions for the new user's home directory
      * in order to be able to lg in there when login to the system
      */
-    bool set_chown();
-    bool set_chmod();
-    bool del_user_home();
+    Q_INVOKABLE bool set_chown();
+    Q_INVOKABLE bool set_chmod();
+    Q_INVOKABLE bool del_user_home();
 
 private:
     // username & password string variables
