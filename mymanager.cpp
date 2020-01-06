@@ -394,3 +394,101 @@ QString myManager::ip6tables()
     }
     return hold;
 }
+
+/* ============================================================================================================ */
+/*                                      SECTION III : Group Management                                          */
+/* ============================================================================================================ */
+QString myManager::getGid() const
+{
+    return gid;
+}
+
+void myManager::setGid(const QString &value)
+{
+    gid = value;
+}
+
+QString myManager::getNew_groupname() const
+{
+    return new_groupname;
+}
+
+void myManager::setNew_groupname(const QString &value)
+{
+    new_groupname = value;
+}
+
+QString myManager::getGroupname() const
+{
+    return groupname;
+}
+
+void myManager::setGroupname(const QString &value)
+{
+    groupname = value;
+}
+
+bool myManager::group_exists()
+{
+    QProcess proc;
+    proc.start("getent group " + getGroupname());
+    proc.waitForFinished(-1);
+    if(proc.exitCode()!=0)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool myManager::groupadd()
+{
+    QProcess pass, add;
+    pass.setStandardOutputProcess(&add);
+    pass.start("echo " + getPassword());
+    if(gid.isEmpty())
+    {
+        add.start("sudo -S groupadd " + getGroupname());
+    }
+    else {
+        add.start("sudo -S groupadd -g " + getGid() + " " + getGroupname());
+    }
+    pass.waitForFinished(-1);
+    add.waitForFinished(-1);
+    if(add.exitCode()!=0)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool myManager::groupmod()
+{
+    QProcess pass, mod;
+    pass.setStandardOutputProcess(&mod);
+    pass.start("echo " + getPassword());
+    mod.start("sudo -S groupmod -n " + getNew_groupname() + " " + getGroupname());
+    qDebug() << "groupmod command debug: " << "sudo -S groupmod -n " << getNew_groupname() << " " << getGroupname() << endl;
+    pass.waitForFinished(-1);
+    mod.waitForFinished(-1);
+    if(mod.exitCode()!=0)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool myManager::groupdel()
+{
+    QProcess pass, del;
+    pass.setStandardOutputProcess(&del);
+    pass.start("echo " + getPassword());
+    del.start("sudo -S groupdel " + getGroupname());
+    pass.waitForFinished(-1);
+    del.waitForFinished(-1);
+    if(del.exitCode()!=0)
+    {
+        return false;
+    }
+    return true;
+}
+

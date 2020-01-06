@@ -1099,6 +1099,15 @@ ApplicationWindow {
                                 genericMessageDialog.title = "WARNING"
                                 genericMessageDialog.open()
                                 groupCheckBoxId.checked = false
+                            } else {
+                                // set group name, group id and group new name if it is typed from the user
+                                // feed C++ code with QML properties from TextFields from GrouBox elements ..
+                                //
+                                myManager.setGid(new_group_id)
+                                myManager.setGroupname(new_group_name)
+                                myManager.setNew_groupname(existing_group_new_name)
+                                console.log("GroupName: " + new_group_name + " -- " + myManager.getGroupname())
+                                console.log("Group New Name: " + existing_group_new_name + " -- " + myManager.getNew_groupname())
                             }
                         }
                     }
@@ -1111,16 +1120,92 @@ ApplicationWindow {
                     id: createGroupId
                     text: "     CREATE"
                     leftInset: 20
+                    onClicked: {
+                        if(username==="" || passwd_une==="") {
+                            genericMessageDialog.text = "Please provide username and password and try again."
+                            genericMessageDialog.title = "ERROR"
+                            genericMessageDialog.open()
+                        } else {
+                            //if the group exists cannot create it
+                            if(myManager.group_exists()===false) {
+                                // if the group does not exist, I can create it
+                                if(myManager.groupadd()===true) {
+                                    genericMessageDialog.text = qsTr("New group: " + myManager.getGroupname() + " succesfully created!")
+                                    genericMessageDialog.title = "SUCCESS"
+                                    genericMessageDialog.open()
+                                } else {
+                                    genericMessageDialog.text = qsTr("New group: " + myManager.getGroupname() + " FAILED to be created!")
+                                    genericMessageDialog.title = "GROUP CREATION FAILURE"
+                                    genericMessageDialog.open()
+                                }
+                            } else {
+                                genericMessageDialog.text = qsTr("The group: " + myManager.getGroupname() + " already exists. CANNOT create it. Try another one!")
+                                genericMessageDialog.title = "GROUP CREATION FAILURE"
+                                genericMessageDialog.open()
+                            }
+                        }
+                    }
                 }
                 Button {
                     id: renameGroupId
                     text: "RENAME"
                     leftInset: 5
+                    onClicked: {
+                        //
+                        if(username==="" || passwd_une==="") {
+                            genericMessageDialog.text = "Please provide username and password and try again."
+                            genericMessageDialog.title = "ERROR"
+                            genericMessageDialog.open()
+                        } else {
+                            //if the group does not exist cannot rename it
+                            if(myManager.group_exists()===true) {
+                                // if the group does not exist, I can create it
+                                if(myManager.groupmod()===true) {
+                                    genericMessageDialog.text = qsTr("The group: " + myManager.getGroupname() + " succesfully renamed!")
+                                    genericMessageDialog.title = "SUCCESS"
+                                    genericMessageDialog.open()
+                                } else {
+                                    genericMessageDialog.text = qsTr("The group: " + myManager.getGroupname() + " FAILED to be renamed!")
+                                    genericMessageDialog.title = "GROUP CREATION FAILURE"
+                                    genericMessageDialog.open()
+                                }
+                            } else {
+                                genericMessageDialog.text = qsTr("The group: " + myManager.getGroupname() + " does not exist. CANNOT rename it. Try another one!")
+                                genericMessageDialog.title = "GROUP CREATION FAILURE"
+                                genericMessageDialog.open()
+                            }
+                        }
+                    }
                 }
                 Button {
                     id: removeGroupId
                     text: "REMOVE"
                     leftInset: 5
+                    onClicked: {
+                        if(username==="" || passwd_une==="") {
+                            genericMessageDialog.text = "Please provide username and password and try again."
+                            genericMessageDialog.title = "ERROR"
+                            genericMessageDialog.open()
+                        } else {
+                            //if the group does not exists cannot delete it
+                            if(myManager.group_exists()===true) {
+                                // if the group does not exist, I can create it
+                                if(myManager.groupdel()===true) {
+                                    genericMessageDialog.text = qsTr("Group: " + myManager.getGroupname() + " succesfully removed from your system!")
+                                    genericMessageDialog.title = "SUCCESS"
+                                    genericMessageDialog.open()
+                                } else {
+                                    genericMessageDialog.text = qsTr("Group: " + myManager.getGroupname() + " FAILED to be created!")
+                                    genericMessageDialog.title = "GROUP REMOVAL FAILURE"
+                                    genericMessageDialog.open()
+                                }
+                            } else {
+                                genericMessageDialog.text = qsTr("The group: " + myManager.getGroupname() + " does not exist. CANNOT delete it. Try another one!")
+                                genericMessageDialog.title = "GROUP REMOVAL FAILURE"
+                                genericMessageDialog.open()
+                            }
+                        }
+                    }
                 }
             }
         }

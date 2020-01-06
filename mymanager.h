@@ -85,6 +85,24 @@ public:
     Q_INVOKABLE void setTable(const QString table);
     Q_INVOKABLE QString getTable() const;
 
+    /*
+     * Group Management related functions
+    */
+    Q_INVOKABLE QString getGroupname() const;
+    Q_INVOKABLE void setGroupname(const QString &value);
+    Q_INVOKABLE QString getNew_groupname() const;
+    Q_INVOKABLE void setNew_groupname(const QString &value);
+    Q_INVOKABLE QString getGid() const;
+    Q_INVOKABLE void setGid(const QString &value);
+    // Create a new group
+    Q_INVOKABLE bool groupadd();
+    // Rename an existing group
+    Q_INVOKABLE bool groupmod();
+    // Remove an existing group
+    Q_INVOKABLE bool groupdel();
+    // Check if a group exists
+    Q_INVOKABLE bool group_exists();
+
 private:
     // username & password string variables
     //
