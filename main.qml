@@ -684,6 +684,14 @@ ApplicationWindow {
                         onClicked: {
                             if(myManager.is_username_valid() === true) {
                                 console.log("Username: " + new_username + " is a valid one ... Continue procedure ... ")
+                                if(myManager.user_exists() === false) {
+                                    // if the user does not exist , then create him
+                                    if(myManager.adduser() === true) {
+                                        console.log("User: " + myManager.getNew_username() + " was succesfully created!")
+                                    } else {
+                                        console.log("User: " + myManager.getNew_username() + " failed to be created! Please try again!")
+                                    }
+                                }
                             } else {
                                 console.log("Invalid username ... Aborting ...")
                             }
@@ -693,6 +701,15 @@ ApplicationWindow {
                         id: removeUserDelayButtonId
                         text: qsTr("REMOVE")
                         anchors.left: parent.right
+                        onClicked: {
+                            if(myManager.user_exists() === false) {
+                                console.log("Cannot remove user that does not exist in the system.")
+                            } else {
+                                if(myManager.deluser() === true && myManager.del_user_home()) {
+                                    console.log("Just deleted user: " + new_username + " from your sysrtem!")
+                                }
+                            }
+                        }
                     }
                 }
             }

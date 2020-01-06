@@ -198,9 +198,17 @@ bool myManager::set_chmod()
     return true;
 }
 
-// Create tthe new user using a QProcess
+// Create the new user using a QProcess
 bool myManager::adduser()
 {
+    qDebug() << "Just entered adduser() c++ function ...\n";
+    qDebug() << "Current user is: " << getUsername() << endl;
+    qDebug() << "Password is: " << getPassword() << endl;
+    qDebug() << "New username: " << getNew_username() << endl;
+    qDebug() << "New user real name: " << getNew_user_realname() << endl;
+    qDebug() << "New user group : " << getNew_user_group() << endl;
+    qDebug() <<" New user ID: " << getNew_user_id() << " Shell: " << getNew_user_shell() << endl;
+
     QString options;
     QProcess pass, add;
     pass.setStandardOutputProcess(&add);
