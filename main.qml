@@ -12,8 +12,8 @@ import QtQuick.Dialogs 1.2
 ApplicationWindow {
     id: rootElementId
     visible: true
-    width: 1024
-    height: 720
+    width: 720
+    height: 740
     title: qsTr("Bienvenue au Linux Manager Utilitaire")
     // Add the Menu Bar for all items regarding Manager Application
     //
@@ -380,8 +380,12 @@ ApplicationWindow {
                     id: submitButtonId
                     property bool activated: false
                     // When the 'Submit' Button is pressed for '1.5' seconds, then it is activated and going on ...
-                    delay: 1500
+                    delay: 1000
                     text: "Submit Credentials"
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 1500
+                    ToolTip.text: qsTr("Press this Button until it is activated.\nThen press it to proceed!")
+                    ToolTip.visible: hovered
                     onActivated: {
                         activated = true
                     }
@@ -436,6 +440,10 @@ ApplicationWindow {
                 id: clearSwitchId
                 text: "Clear Fields"
                 checked: false
+                ToolTip.delay: 500
+                ToolTip.timeout: 1500
+                ToolTip.text: qsTr("Clean up Credentials Text Fields!")
+                ToolTip.visible: hovered
                 onCheckedChanged: {
                     if(checked === true) {
                         usernameTextFieldId.text = ""
@@ -703,6 +711,10 @@ ApplicationWindow {
                     Button {
                         id: createNewUserButtonId
                         text: qsTr("CREATE")
+                        ToolTip.delay: 500
+                        ToolTip.timeout: 1500
+                        ToolTip.text: qsTr("Create a new user!")
+                        ToolTip.visible: hovered
                         onClicked: {
                             // check if 'Submit Credentials' is checked in order to enter this CREATE user procedure
                             //
@@ -755,7 +767,10 @@ ApplicationWindow {
                         delay: 1000
                         text: qsTr("REMOVE")
                         anchors.left: parent.right
-
+                        ToolTip.delay: 500
+                        ToolTip.timeout: 1500
+                        ToolTip.text: qsTr("Remove a user from your Linux desktop!")
+                        ToolTip.visible: hovered
                         onActivated: {
                             userdelActivate = true
                         }
@@ -941,6 +956,10 @@ ApplicationWindow {
                 ComboBox {
                     id: firewallComboBoxId
                     textRole: "choice"
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 1500
+                    ToolTip.text: qsTr("Please choose one Table to show its IPv4 or IPv6 Firewall Configuration!\n\t[Filter | Raw | Security | Mangle]")
+                    ToolTip.visible: hovered
                     model: ListModel {
                         id: tablesModel
 
@@ -1120,6 +1139,10 @@ ApplicationWindow {
                     id: createGroupId
                     text: "     CREATE"
                     leftInset: 20
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 1500
+                    ToolTip.text: qsTr("Create a new group in your Linux Desktop!")
+                    ToolTip.visible: hovered
                     onClicked: {
                         if(username==="" || passwd_une==="") {
                             genericMessageDialog.text = "Please provide username and password and try again."
@@ -1150,6 +1173,10 @@ ApplicationWindow {
                     id: renameGroupId
                     text: "RENAME"
                     leftInset: 5
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 1500
+                    ToolTip.text: qsTr("Rename an existing group in your Linux Desktop!")
+                    ToolTip.visible: hovered
                     onClicked: {
                         //
                         if(username==="" || passwd_une==="") {
@@ -1181,6 +1208,10 @@ ApplicationWindow {
                     id: removeGroupId
                     text: "REMOVE"
                     leftInset: 5
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 1500
+                    ToolTip.text: qsTr("Remove a group from your Linux Dekstop!")
+                    ToolTip.visible: hovered
                     onClicked: {
                         if(username==="" || passwd_une==="") {
                             genericMessageDialog.text = "Please provide username and password and try again."
