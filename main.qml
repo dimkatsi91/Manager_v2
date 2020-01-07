@@ -815,7 +815,7 @@ ApplicationWindow {
         title: qsTr("System & Networking Information")
         x: 5
         width: credsGroupBoxId.width
-        height: userMgmntId.height - 100
+        height: userMgmntId.height - 70
         anchors.left: credsGroupBoxId.right
         anchors.top: rootElementId.top
         font: Qt.font({family: "Helvetica", pointSize: 9, italic: true, bold: true})
@@ -899,6 +899,25 @@ ApplicationWindow {
                     }
                 }
             }
+
+            Row {
+                bottomPadding: 10
+                leftPadding: 20
+                // Show Routing Table
+                CheckBox {
+                    id: routingTableCheckBox
+                    text: "Show Routing Table"
+                    onClicked: {
+                        if(checked===true) {
+                            genericMessageDialog.text = qsTr(myManager.netstat())
+                            genericMessageDialog.title = "Routing Table"
+                            genericMessageDialog.open()
+                            routingTableCheckBox.checked = false
+                        }
+                    }
+                }
+            }
+
             Row {
                 bottomPadding: 10
                 leftPadding: 20
@@ -1092,7 +1111,7 @@ ApplicationWindow {
                     text: "Clear Group Management Text Fields"
                     checked: false
                     leftPadding: 20
-                    bottomPadding: 20
+                    bottomPadding: 10
                     onCheckedChanged: {
                         if(checked===true) {
                             newGroupNameTextFieldId.text = ""
