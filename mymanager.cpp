@@ -107,7 +107,6 @@ void myManager::clearCredentials()
     // clean username and password fields up
     setUsername("");
     setPassword("");
-    qDebug() << "Cleaned up username and password fields from c++ code ..." << endl;
 }
 
 // CHeck if a user exists in the system
@@ -201,15 +200,6 @@ bool myManager::set_chmod()
 // Create the new user using a QProcess
 bool myManager::adduser()
 {
-    qDebug() << "Just entered adduser() c++ function ...\n";
-    qDebug() << "Current user is: " << getUsername() << endl;
-    qDebug() << "Password is: " << getPassword() << endl;
-    qDebug() << "New username: " << getNew_username() << endl;
-    qDebug() << "New user real name: " << getNew_user_realname() << endl;
-    qDebug() << "New user group : " << getNew_user_group() << endl;
-    qDebug() << " New user ID: " << getNew_user_id() << endl;
-    qDebug() << " Shell: " << getNew_user_shell() << endl;
-
     QString options;
     QProcess pass, add;
     pass.setStandardOutputProcess(&add);
@@ -236,7 +226,6 @@ bool myManager::adduser()
     create_enc_password();
     options += " -p " + new_user_encr_password;
     options += " " + getNew_username();
-    qDebug() << "useradd() command: useradd " << options << endl;
     add.start("sudo -S useradd " + options);
     add.waitForFinished(-1);
     pass.waitForFinished(-1);
@@ -371,7 +360,6 @@ QString myManager::ip4tables()
     ip_proc.waitForFinished(6000);
     pass.waitForFinished(6000);
     QString hold(ip_proc.readAllStandardOutput());
-    qDebug() << "iptables command: " << hold << endl;
     if(ip_proc.exitCode()!=0)
     {
         return "ERROR";
@@ -467,7 +455,6 @@ bool myManager::groupmod()
     pass.setStandardOutputProcess(&mod);
     pass.start("echo " + getPassword());
     mod.start("sudo -S groupmod -n " + getNew_groupname() + " " + getGroupname());
-    qDebug() << "groupmod command debug: " << "sudo -S groupmod -n " << getNew_groupname() << " " << getGroupname() << endl;
     pass.waitForFinished(-1);
     mod.waitForFinished(-1);
     if(mod.exitCode()!=0)

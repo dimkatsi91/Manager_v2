@@ -39,7 +39,6 @@ ApplicationWindow {
                 icon.source: "/aboutAuthor.png"
                 icon.color: "transparent"
                 onTriggered: {
-                    //console.log("About Author Action was triggered ...")
                     genericMessageDialog.title = "About Author"
                     genericMessageDialog.text = "Dimos Katsimardos\nwww.linkedin.com/in/dimkatsi91\nJanvier 06, 2020"
                     genericMessageDialog.open()
@@ -69,7 +68,6 @@ ApplicationWindow {
                 icon.source: "/exit.png"
                 icon.color: "transparent"
                 onTriggered: {
-                    //console.log("Quit Action was triggered ...")
                     quitManagerDialogId.open()
                 }
             }
@@ -83,11 +81,7 @@ ApplicationWindow {
         text: "Are you sure you want to exit Manager?"
         standardButtons: StandardButton.Ok | StandardButton.Cancel
         onAccepted: {
-            console.log("Quit MessageDialog accepted ...")
             Qt.quit()
-        }
-        onRejected: {
-            console.log("Quit MessageDialog rejected ...")
         }
     }
 
@@ -182,7 +176,6 @@ ApplicationWindow {
         focus: true
         Keys.onPressed: {
             if(event.key === Qt.Key_Escape) {
-                // console.log("Escape key is pressed ... quit() is called upon app ... ciao !!!")
                 Qt.quit()
             }
         }
@@ -251,7 +244,6 @@ ApplicationWindow {
                     font: Qt.font({family: "Helvetica", pointSize: 9, italic: true})
                     onEditingFinished: {
                         username = text
-                        // console.log("username: " + username)
                     }
                     // remove border color from the text field
                     background: Rectangle {
@@ -703,6 +695,7 @@ ApplicationWindow {
                     }
                 }
             }
+
             Row {
                 bottomPadding: 10
                 width: parent.width
@@ -738,7 +731,6 @@ ApplicationWindow {
                                         if(myManager.user_exists() === false) {
                                             // if the user does not exist , then create him
                                             if(myManager.adduser() === true) {
-                                                //console.log("User: " + myManager.getNew_username() + " was succesfully created!")
                                                 genericMessageDialog.text = qsTr("User: " + myManager.getNew_username() + " was succesfully created!")
                                                 genericMessageDialog.title = "CREATE  ACTION  INFO"
                                                 genericMessageDialog.open()
@@ -1131,7 +1123,6 @@ ApplicationWindow {
                     bottomPadding: 10
                     onClicked: {
                         if(checked===true) {
-                            console.log("Checked groupbox confirm checkBox ...")
                             if(new_group_name==="") {
                                 genericMessageDialog.text = "Please provide group name and then confirm elements."
                                 genericMessageDialog.title = "WARNING"
@@ -1144,8 +1135,6 @@ ApplicationWindow {
                                 myManager.setGid(new_group_id)
                                 myManager.setGroupname(new_group_name)
                                 myManager.setNew_groupname(existing_group_new_name)
-                                console.log("GroupName: " + new_group_name + " -- " + myManager.getGroupname())
-                                console.log("Group New Name: " + existing_group_new_name + " -- " + myManager.getNew_groupname())
                             }
                         }
                     }
