@@ -1062,7 +1062,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Group to be renamed new name")
                     onEditingFinished: {
-                        new_group_id = newGroupIDTextFieldId.text
+                        existing_group_new_name = newGroupNewNameTextFieldId.text
                     }
                 }
             }
