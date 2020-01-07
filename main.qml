@@ -90,9 +90,10 @@ ApplicationWindow {
     Dialog {
         id: aboutManagerDialogId
 
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
-        width: Math.min(parent.width, parent.height) / 3 * 2
+        //x: (parent.width - width) / 2
+        //y: (parent.height - height) / 2
+        // correct this parent warning :: change 'parent' --> 'ApplicationWindow'
+        width: Math.min(ApplicationWindow.width, ApplicationWindow.height) / 3 * 2
         ////contentHeight: parent.height/2 // This doesn't cause the binding loop.
         ////parent: Overlay.overlay
 
@@ -421,7 +422,7 @@ ApplicationWindow {
                     }
                     // align 'Submit' button in the center of the last Row
                     //
-                    anchors.horizontalCenter: Qt.AlignHCenter
+                    anchors.fill: parent.Center
                     opacity: .75
                 }
             }
@@ -758,7 +759,7 @@ ApplicationWindow {
                         property bool userdelActivate: false
                         delay: 1000
                         text: qsTr("REMOVE")
-                        anchors.left: parent.right
+                        //anchors.left: parent.right
                         ToolTip.delay: 500
                         ToolTip.timeout: 1500
                         ToolTip.text: qsTr("Remove a user from your Linux desktop!")
