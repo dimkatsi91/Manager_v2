@@ -38,3 +38,27 @@
      [x] cqtdeployer -bin Manager_v2 -qmlDir /home/$USER/Qt/5.12.3/gcc_64/qml/ -qmake ~/Qt/5.12.3/gcc_64/bin/qmake clear 
   5. Run this Distribution/bin/Manager_v2 executable to launch application
 
+
+-------------------------------------------------------------------------------
+
+- [x] Example I : Adding a new group in the system :
+  
+  - Provide credentials, long press Submit to activate & press this button
+
+    ![credentials](https://github.com/dimkatsi91/Manager_v2/blob/master/samples/creds_submit.png)
+
+  - List users before new user creation
+
+    ![cat_users_apriori](https://github.com/dimkatsi91/Manager_v2/blob/master/samples/before_user_addition.png)
+
+  - Type new user information and press the button CREATE
+
+    ![create_new_user](https://github.com/dimkatsi91/Manager_v2/blob/master/samples/user_create.png)
+
+  - List users after new user creation
+
+    ![cat_users_aposteriori](https://github.com/dimkatsi91/Manager_v2/blob/master/samples/after_user_addition.png)
+
+  - BONUS: Check IPv4 Firewall configuration for Mangle Table
+
+    ![ip4tables_Mangle](https://github.com/dimkatsi91/Manager_v2/blob/master/samples/ipv4_mangle_firewall.png)
