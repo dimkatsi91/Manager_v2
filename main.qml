@@ -1019,6 +1019,7 @@ ApplicationWindow {
                 TextField {
                     id: newGroupNameTextFieldId
                     width: groupMgmntId.width - newGroupNameLabelId.width - 30
+                    rightInset: 5
                     // remove border color from the text field
                     background: Rectangle {
                         border.color: "transparent"
@@ -1048,6 +1049,7 @@ ApplicationWindow {
                 TextField {
                     id: newGroupIDTextFieldId
                     width: groupMgmntId.width - newGroupIDLabelId.width - 30
+                    rightInset: 5
                     // remove border color from the text field
                     background: Rectangle {
                         border.color: "transparent"
@@ -1077,6 +1079,7 @@ ApplicationWindow {
                 TextField {
                     id: newGroupNewNameTextFieldId
                     width: groupMgmntId.width - newGroupNewNameLabelId.width - 30
+                    rightInset: 5
                     // remove border color from the text field
                     background: Rectangle {
                         border.color: "transparent"
