@@ -8,13 +8,13 @@ import QtQuick.Controls.Styles 1.3
 // import Qt Quick Dialogs
 import QtQuick.Dialogs 1.2
 
-
 ApplicationWindow {
     id: rootElementId
     visible: true
     width: 720
     height: 740
     title: qsTr("Bienvenue au Linux Manager Utilitaire")
+
     // Add the Menu Bar for all items regarding Manager Application
     //
     menuBar: MenuBar {
@@ -27,8 +27,7 @@ ApplicationWindow {
             Action {
                 id: aboutManagerId
                 text: qsTr("Manager &Help")
-                icon.source: "/aboutManager.png"
-                icon.color: "transparent"
+                icon {source: "/aboutManager.png"; color: "transparent"}
                 onTriggered: {
                     aboutManagerDialogId.open()
                 }
@@ -36,8 +35,7 @@ ApplicationWindow {
             Action {
                 id: aboutAuthorId
                 text: "About &Author"
-                icon.source: "/aboutAuthor.png"
-                icon.color: "transparent"
+                icon {source: "/aboutAuthor.png"; color: "transparent"}
                 onTriggered: {
                     genericMessageDialog.title = "About Author"
                     genericMessageDialog.text = "Dimos Katsimardos\nwww.linkedin.com/in/dimkatsi91\nJanvier 06, 2020"
@@ -54,8 +52,7 @@ ApplicationWindow {
             Action {
                 id: changeColorActionId
                 text: qsTr("Change Manager &Color")
-                icon.source: "/backColor.png"
-                icon.color: "transparent"
+                icon {source: "/backColor.png"; color: "transparent"}
                 onTriggered: {
                     // open ColorDialog to choose a color
                     colorDialogId.open()
@@ -65,8 +62,7 @@ ApplicationWindow {
             Action {
                 id: quitManagerAppId
                 text: qsTr("Quit &Manager")
-                icon.source: "/exit.png"
-                icon.color: "transparent"
+                icon {source: "/exit.png"; color: "transparent"}
                 onTriggered: {
                     quitManagerDialogId.open()
                 }
@@ -97,7 +93,6 @@ ApplicationWindow {
         ////contentHeight: parent.height/2 // This doesn't cause the binding loop.
         ////parent: Overlay.overlay
 
-        ////modal: true
         title: "About Manager"
         standardButtons: Dialog.Close
 
@@ -397,7 +392,7 @@ ApplicationWindow {
                                     genericMessageDialog.text = "Passwords do not match. Type them correctly and try again!"
                                     genericMessageDialog.open()
                                 } else {
-                                    genericMessageDialog.title = "CREDENTIALS INFOMRATION"
+                                    genericMessageDialog.title = "CREDENTIALS INFORMATION"
                                     genericMessageDialog.text = "Credentials provided. Continuing procedure .."
                                     genericMessageDialog.open()
                                     // pass entered username from the TextField to my C++ code

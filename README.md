@@ -1,14 +1,14 @@
 > <h2><strong>Qt Quick Linux Manager Utility - Application</strong></h2> 
 
-<h5>Title  : Linux Manager Application</h5>
+<h5>Title   : Linux Manager Application</h5>
 
-<h5>Author : Dimos Katsimardos</h5>
+<h5>Author  : Dimos Katsimardos</h5>
 
-<h5>Date   : Janvier 06, 2020</h5>
+<h5>Date    : Janvier 06, 2020</h5>
 
-<h5>IDE    : Qt Creator 4.11.0 Open Source Community Edition</h5>
+<h5>IDE     : Qt Creator 4.11.0 Open Source Community Edition</h5>
 
-<h5>Tool   : Qt 5.14.0 Open Source Community Edition</h5>
+<h5>Tools   : Qt 5.14.0 Open Source Community Edition, QML, C++</h5>
 
 <h5>Applicable  : Every Linux distribution</h5>
 
