@@ -13,6 +13,10 @@ ApplicationWindow {
     visible: true
     width: 720
     height: 740
+    minimumWidth: credsGroupBoxId.width + systemInfoGroupBox.width + 30
+    minimumHeight: credsGroupBoxId.height + userMgmntId.height + 60
+    maximumWidth: credsGroupBoxId.width + systemInfoGroupBox.width + 80
+    maximumHeight: credsGroupBoxId.height + userMgmntId.height + 120
     title: qsTr("Bienvenue au Linux Manager Utilitaire")
 
     // Add the Menu Bar for all items regarding Manager Application
