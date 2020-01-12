@@ -23,11 +23,11 @@ ApplicationWindow {
         if(myManager.passComplexity==="Weak") {
             return 30;
         } else if(myManager.passComplexity==="Medium") {
-            return 60;
+            return 50;
         } else if(myManager.passComplexity==="Strong") {
-            return 90;
+            return 70;
         } else {
-            return 5;
+            return 100;
         }
     }
 
@@ -656,7 +656,7 @@ ApplicationWindow {
                     //indeterminate: true
                 }
             }
-
+            /////////////////////////////////////////////////////////////////////
             Row {
                 width: parent.width
                 bottomPadding: 10

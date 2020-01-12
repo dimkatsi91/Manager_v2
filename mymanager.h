@@ -7,7 +7,7 @@
 #include <QList>
 #include <QVector>
 #include <QDebug>
-#include <QRegExp>
+#include <QRegularExpression>
 
 class myManager : public QObject
 {

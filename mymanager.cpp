@@ -519,14 +519,46 @@ void myManager::setPassComplexity(QString passComplexity)
     // Will be updated for username classes :
     // Uppercase / Lowercase letter , digits & special character presence inside the password
     // that is typed from the operator
+    //
+    QRegularExpression re_digit("[0-9]");
+    QRegularExpression re_Upper("[A-Z]");
+    QRegularExpression re_SpecialChar("[!@#$%^&*,._+=/]");
+
+    bool hasDigit = false;
+    bool hasUpper = false;
+    bool hasSpecialChar = false;
+
+    // For sure username has lowercase letters, so class is initialized to: 1
+    // FOr every other class found inside the password, ++classesFound
+    int classesFound = 1;
+
+    if(re_digit.match(passComplexity).hasMatch()) {
+        //qDebug() << "Found DIGIT inside password ...\n";
+        hasDigit = true;
+    }
+
+    if( re_Upper.match(passComplexity).hasMatch() ) {
+        //qDebug() << "Found UPPERCASE letter inside password ...\n";
+        hasUpper = true;
+    }
+
+    if(re_SpecialChar.match(passComplexity).hasMatch()) {
+        //qDebug() << "Found SPECIAL character inside password ...\n";
+        hasSpecialChar = true;
+    }
+
+    classesFound += (hasDigit==true ? 1 : 0) + (hasUpper==true ? 1 : 0) + (hasSpecialChar==true ? 1 : 0);
+    //qDebug() << "Classes found inside password are: " << classesFound << endl;
 
 
-    if(passComplexity.length()<7) {
+    if(classesFound==1) {
         m_passComplexity = QString("Weak");
-    } else if(passComplexity.length()>7) {
+    } else if(classesFound==2) {
         m_passComplexity = QString("Medium");
-    } else if(passComplexity.length()>10) {
+    } else if(classesFound==3) {
         m_passComplexity = QString("Strong");
+    } else {
+        m_passComplexity = QString("Very Strong");
     }
 
     //m_passComplexity = passComplexity;
