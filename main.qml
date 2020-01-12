@@ -19,6 +19,18 @@ ApplicationWindow {
     maximumHeight: credsGroupBoxId.height + userMgmntId.height + 120
     title: qsTr("Bienvenue au Linux Manager Utilitaire")
 
+    function getPassComplexity() {
+        if(myManager.passComplexity==="Weak") {
+            return 30;
+        } else if(myManager.passComplexity==="Medium") {
+            return 60;
+        } else if(myManager.passComplexity==="Strong") {
+            return 90;
+        } else {
+            return 5;
+        }
+    }
+
     // Add the Menu Bar for all items regarding Manager Application
     //
     menuBar: MenuBar {
@@ -624,9 +636,27 @@ ApplicationWindow {
                     ToolTip.text: qsTr("New user to be created password")
                     onEditingFinished: {
                         new_user_encr_password = newUserPasswordTextFieldId.text
+                        // Here ,also call the C++ function to update passwords complexity
+                        // If Uppercase letter exists: +1  || Lowercase: +1  || specialcharacter: +1   || digit: +1
+                        myManager.setPassComplexity(new_user_encr_password)
                     }
                 }
             }
+            // A ProgressBar that illustrates how strong the entered password is
+            //
+            Row {
+                width: parent.width
+                bottomPadding: 10
+                ProgressBar {
+                    id: howStrongPassIs
+                    from: 10
+                    to: 100
+                    value: getPassComplexity()
+                    height: 10
+                    //indeterminate: true
+                }
+            }
+
             Row {
                 width: parent.width
                 bottomPadding: 10
@@ -679,6 +709,10 @@ ApplicationWindow {
                             if(new_username === "" || new_user_encr_password === "") {
                                 genericMessageDialog.text = "New user to be created username and password should be both specified! Please enter them and try again!"
                                 genericMessageDialog.title = "CONFIRM  ACTION  ERROR"
+                                genericMessageDialog.open()
+                            } else if(myManager.is_username_valid(new_username)===false) {
+                                genericMessageDialog.text = "Invalid username. Type another one and try again!"
+                                genericMessageDialog.title = "USERNAME ERROR"
                                 genericMessageDialog.open()
                             } else {
                                 // call c++ code to pass string values from QML elements (TExtFieds) to c++ QString variables
@@ -801,7 +835,7 @@ ApplicationWindow {
         }
     }
 
-    /*                      SYSTEM & NETWORKING INFOMRATION                     */
+    /*                      SYSTEM & NETWORKING INFORMATION                     */
     GroupBox {
         id: systemInfoGroupBox
         title: qsTr("System & Networking Information")

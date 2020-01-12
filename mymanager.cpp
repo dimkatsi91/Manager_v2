@@ -1,9 +1,8 @@
 #include "mymanager.h"
 
 
-myManager::myManager(QObject *parent) : QObject(parent)
+myManager::myManager(QObject *parent) : QObject(parent), m_passComplexity("Weak")
 {
-
 }
 
 
@@ -141,6 +140,33 @@ bool myManager::is_username_valid()
     while(start != invalid_characters.end())
     {
         if(getNew_username().at(0) == *start)
+        {
+            return false;
+        }
+        start++;
+    }
+
+    return true;
+}
+
+bool myManager::is_username_valid(QString userName)
+{
+    // Name of the new user should not start with a digit
+    // Also a username in Linux should be lower case name
+    qDebug() << "Checking for new user's username validation ...\n";
+    if(userName == getenv("USER") || userName.at(0).isDigit() || userName.at(0).isUpper())
+    {
+        return false;
+    }
+    QVector<QString> invalid_characters = {"`", "~", "@", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "+", "<", ">", ",", ".", "=", "_", "/", ";", ":", "?"};
+    QVector<QString>::iterator start = invalid_characters.begin();
+    if(userName=="root")
+    {
+        return false;
+    }
+    while(start != invalid_characters.end())
+    {
+        if(userName.at(0) == *start)
         {
             return false;
         }
@@ -479,3 +505,30 @@ bool myManager::groupdel()
     return true;
 }
 
+/* Q_PROPERTY functionality to notify QML code regarding the entered password's
+ * complexity for the new user that is about to be created
+ */
+QString myManager::passComplexity() const
+{
+    return m_passComplexity;
+}
+
+void myManager::setPassComplexity(QString passComplexity)
+{
+    // This is for real time illustration for now
+    // Will be updated for username classes :
+    // Uppercase / Lowercase letter , digits & special character presence inside the password
+    // that is typed from the operator
+
+
+    if(passComplexity.length()<7) {
+        m_passComplexity = QString("Weak");
+    } else if(passComplexity.length()>7) {
+        m_passComplexity = QString("Medium");
+    } else if(passComplexity.length()>10) {
+        m_passComplexity = QString("Strong");
+    }
+
+    //m_passComplexity = passComplexity;
+    emit passComplexityChanged(m_passComplexity);
+}

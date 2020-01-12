@@ -6,7 +6,8 @@
 #include <QProcess>
 #include <QList>
 #include <QVector>
-#include <QtWidgets/QMessageBox>
+#include <QDebug>
+#include <QRegExp>
 
 class myManager : public QObject
 {
@@ -56,6 +57,8 @@ public:
      */
     Q_INVOKABLE void create_enc_password();
     Q_INVOKABLE bool is_username_valid();
+    // Overload this function too || needed
+    Q_INVOKABLE bool is_username_valid(QString userName);
     Q_INVOKABLE bool adduser();
     Q_INVOKABLE bool deluser();
     Q_INVOKABLE bool user_exists();
@@ -102,6 +105,14 @@ public:
     // Check if a group exists
     Q_INVOKABLE bool group_exists();
 
+    // A Q_PROPERTY for set/get/signal for password complexity in real time when
+    // the user enters the password for the new user that is about to be created
+    //
+    Q_PROPERTY(QString passComplexity READ passComplexity WRITE setPassComplexity NOTIFY passComplexityChanged)
+
+    Q_INVOKABLE QString passComplexity() const;
+    Q_INVOKABLE void setPassComplexity(QString passComplexity);
+
 private:
     // username & password string variables
     //
@@ -122,9 +133,14 @@ private:
     //
     QString firewallTable;
 
+    // New user's password complexity
+    // Weak || Medium || Strong
+    QString m_passComplexity;
+
 signals:
     // no need for now | everything is controled by the QML UI code
-
+    // 12/1/2020 :: Update --> now it is needed !!!
+    void passComplexityChanged(QString passComplexity);
 };
 
 #endif // MYMANAGER_H
