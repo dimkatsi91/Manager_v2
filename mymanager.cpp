@@ -3,7 +3,7 @@
 
 myManager::myManager(QObject *parent)
     : QObject(parent), m_passComplexity(QString("Default"))
-    {}
+{}
 
 
 /* ============================================================================================================ */
@@ -516,7 +516,6 @@ QString myManager::passComplexity() const
 void myManager::setPassComplexity(QString passComplexity)
 {
     int passLength = passComplexity.length();
-
     // This is for real time illustration for now
     // Will be updated for username classes :
     // Uppercase / Lowercase letter , digits & special character presence inside the password
@@ -553,12 +552,14 @@ void myManager::setPassComplexity(QString passComplexity)
     //qDebug() << "Classes found inside password are: " << classesFound << endl;
 
 
-    if(classesFound==1) {
+    if(classesFound==1 && passLength) {
         m_passComplexity = QString("Weak");
     } else if(classesFound==2) {
         m_passComplexity = QString("Medium");
     } else if(classesFound==3) {
         m_passComplexity = QString("Strong");
+    } else if(passLength==0) {
+        m_passComplexity = QString("Default");
     } else {
         // If the password has one lowercase | one uppercase | one digit | one special && lenght>10 then
         // it is of course a Very Strong one ... Otherwise, it is just strong
