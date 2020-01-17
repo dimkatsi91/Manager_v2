@@ -20,7 +20,11 @@ ApplicationWindow {
     title: qsTr("Bienvenue au Linux Manager Utilitaire")
 
     function getPassComplexity() {
-        if(myManager.passComplexity==="Weak") {
+        // Fetch password's complexity from c++ logic real time
+        //
+        if (myManager.passComplexity==="None") {
+            return 10;
+        } else if(myManager.passComplexity==="Weak") {
             return 30;
         } else if(myManager.passComplexity==="Medium") {
             return 50;

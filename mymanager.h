@@ -134,7 +134,7 @@ private:
     QString firewallTable;
 
     // New user's password complexity
-    // Weak || Medium || Strong
+    // Weak || Medium || Strong || Very strong
     QString m_passComplexity;
 
 signals:

@@ -1,9 +1,9 @@
 #include "mymanager.h"
 
 
-myManager::myManager(QObject *parent) : QObject(parent), m_passComplexity("Weak")
-{
-}
+myManager::myManager(QObject *parent)
+    : QObject(parent), m_passComplexity(QString("Default"))
+    {}
 
 
 /* ============================================================================================================ */
@@ -510,7 +510,7 @@ bool myManager::groupdel()
  */
 QString myManager::passComplexity() const
 {
-    return m_passComplexity;
+    return m_passComplexity==QString("Default") ? QString("None") : m_passComplexity;
 }
 
 void myManager::setPassComplexity(QString passComplexity)
@@ -558,7 +558,10 @@ void myManager::setPassComplexity(QString passComplexity)
     } else if(classesFound==3) {
         m_passComplexity = QString("Strong");
     } else {
-        m_passComplexity = QString("Very Strong");
+        // If the password has one lowercase | one uppercase | one digit | one special && lenght>10 then
+        // it is of course a Very Strong one ... Otherwise, it is just strong
+        //
+        m_passComplexity = (this->passComplexity().length()>10) ? QString("Very Strong") : QString("Strong");
     }
 
     //m_passComplexity = passComplexity;
