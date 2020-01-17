@@ -657,6 +657,10 @@ ApplicationWindow {
                     to: 100
                     value: getPassComplexity()
                     height: 10
+                    ToolTip.delay: 500
+                    ToolTip.timeout: 4000
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Classes: Lowercase | Uppercase | Digit | Special character\nWeak: 1 class | Medium: 2 classes | Strong: 3 classes | Very Strong: 4 classes")
                     //indeterminate: true
                 }
             }
