@@ -515,6 +515,8 @@ QString myManager::passComplexity() const
 
 void myManager::setPassComplexity(QString passComplexity)
 {
+    int passLength = passComplexity.length();
+
     // This is for real time illustration for now
     // Will be updated for username classes :
     // Uppercase / Lowercase letter , digits & special character presence inside the password
@@ -561,7 +563,8 @@ void myManager::setPassComplexity(QString passComplexity)
         // If the password has one lowercase | one uppercase | one digit | one special && lenght>10 then
         // it is of course a Very Strong one ... Otherwise, it is just strong
         //
-        m_passComplexity = (this->passComplexity().length()>10) ? QString("Very Strong") : QString("Strong");
+        qDebug() << "Lenght = " << passLength<< endl;
+        m_passComplexity = (passLength>10) ? QString("Very Strong") : QString("Strong");
     }
 
     //m_passComplexity = passComplexity;
