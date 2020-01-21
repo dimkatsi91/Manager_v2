@@ -34,9 +34,11 @@
   1. Build in Qt Creator in 'Release' mode
   2. Clean project
   3. Enter terminal inside release folder where Manager_v2 is located
-  4. Run next command to generate a Distribution/ folder containing bin/Manager_v2 :
-     [x] cqtdeployer -bin Manager_v2 -qmlDir /home/$USER/Qt/5.12.3/gcc_64/qml/ -qmake ~/Qt/5.12.3/gcc_64/bin/qmake clear 
-  5. Run this Distribution/bin/Manager_v2 executable to launch application
+  4. install [CQtDeployer](https://github.com/QuasarApp/CQtDeployer) 
+  5. Run next command to generate a Distribution/ folder for generate Distribution in out folder :
+  
+         make deploy
+  6. Run this Distribution/bin/Manager_v2 executable to launch application
 
 
 -------------------------------------------------------------------------------
