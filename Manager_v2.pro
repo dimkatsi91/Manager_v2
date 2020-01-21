@@ -27,9 +27,25 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+CONFIG(release, debug|release): {
+
+    QT_DIR= $$[QT_HOST_BINS]
+    win32:QMAKE_BIN= \'$$QT_DIR/qmake.exe\'
+    win32:DEPLOYER = %cqtdeployer%
+
+    contains(QMAKE_HOST.os, Linux):{
+        QMAKE_BIN= \'$$QT_DIR/qmake\'
+        DEPLOYER = cqtdeployer
+    }
+
+    DEPLOY_TARGET = $${OUT_PWD}/$${DEBUG_OR_RELEASE}/$$TARGET
+    BASE_DEPLOY_FLAGS = clear -qmake $$QMAKE_BIN -qmlDir \'$$PWD\'  -libDir '\$$PWD'\ -recursiveDepth 4
+    deploy.commands = $$DEPLOYER -bin $$DEPLOY_TARGET $$BASE_DEPLOY_FLAGS
+
+}
+
+QMAKE_EXTRA_TARGETS += \
+    deploy
 
 HEADERS += \
     mymanager.h
