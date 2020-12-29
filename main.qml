@@ -617,7 +617,7 @@ ApplicationWindow {
             }
             Row {
                 width: parent.width
-                bottomPadding: 10
+                //bottomPadding: 10
                 // new user Password label & TextField
                 //
                 Label {
@@ -650,7 +650,7 @@ ApplicationWindow {
             //
             Row {
                 width: parent.width
-                bottomPadding: 10
+                //bottomPadding: 10
                 ProgressBar {
                     id: howStrongPassIs
                     from: 10
@@ -1114,7 +1114,7 @@ ApplicationWindow {
             Row {
                 // Existing group new name in order to rename it
                 width: parent.width
-                bottomPadding: 20
+                //bottomPadding: 20
                 leftPadding: 20
                 // new user username Column
                 // label & TextField
