@@ -43,6 +43,13 @@
 
 -------------------------------------------------------------------------------
 
+- Update: December 29, 2020 : Deployment through appimagetool and linuxdeployqt. 
+          Compiled and deployed in Ubuntu 20.04. To use in another Linux desktop
+          version, recompile and follow common deployment procedure regarding 
+          Linuxdeployqt and Appimagetool kits.
+
+-------------------------------------------------------------------------------
+
 - [x] Example I : Adding a new group in the system :
   
   - Provide credentials, long press Submit to activate & press this button
