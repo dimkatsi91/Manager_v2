@@ -43,10 +43,27 @@
 
 -------------------------------------------------------------------------------
 
-- Update: December 29, 2020 : Deployment through appimagetool and linuxdeployqt. 
-          Compiled and deployed in Ubuntu 20.04. To use in another Linux desktop
-          version, recompile and follow common deployment procedure regarding 
-          Linuxdeployqt and Appimagetool kits.
+- Update: December 29, 2020 (tested under Ubuntu 18.04/20.04) 
+  Deployment procedure/guide through appimagetool and linuxdeployqt:
+#### Step I:
+```bash
+$ /home/$USER/Downloads/linuxdeployqt*.AppImage /path-to-this-build-Release-version/Manager_v2 -qmake=/path-to-Qt-qmake/qmake [-unsupported-allow-new-glibc]
+```
+#### Step II:
+Create a Manager_v2.desktop file, like next one (also use a manager_v2.png (256x256) file to be used as the AppImage's icon):
+```yaml
+[Desktop Entry]
+Type=Application
+Name=Linux Desktop Manager_v2 App
+Comment=Qt Quick Controls 2 Linux Desktop Application
+Exec=Manager_v2
+Icon=manager_v2
+Categories=Settings;Development
+```
+#### Step III:
+```bash
+$ /home/$USER/Downloads/appimagetool-x86_64.AppImage /path-to-this-build-Release-version/
+```
 
 -------------------------------------------------------------------------------
 
